@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - UniteHost</title>
+  <style>
+    /* Basic styling */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; display: flex; align-items: center; justify-content: center; height: 100vh; }
+    .container { width: 100%; max-width: 600px; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+    h1 { color: #ff9800; text-align: center; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+    th { background-color: #ff9800; color: #fff; font-weight: bold; }
+    tr:hover { background-color: #f9f9f9; }
+    .auth-section { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+    .auth-section input { padding: 10px; font-size: 1em; margin-top: 10px; border: 1px solid #ddd; border-radius: 5px; }
+    .auth-section button { padding: 10px 20px; margin-top: 10px; font-size: 1em; font-weight: bold; color: #fff; background-color: #ff9800; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+    .auth-section button:hover { background-color: #e68900; }
+  </style>
+</head>
+<body>
+
+<div class="auth-section" id="authSection">
+  <h1>Admin Login</h1>
+  <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+  <button onclick="authenticate()">Login</button>
+</div>
+
+<div class="container" id="adminPanel" style="display: none;">
+  <h1>UniteHost User Data</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Password</th>
+      </tr>
+    </thead>
+    <tbody id="userData"></tbody>
+  </table>
+</div>
+
+<script>
+  // Authenticate admin
+  function authenticate() {
+    const password = document.getElementById("adminPassword").value;
+    if (password === "admin_404_unitehost") {
+      document.getElementById("authSection").style.display = "none";
+      document.getElementById("adminPanel").style.display = "block";
+      loadUserData();
+    } else {
+      alert("Incorrect password. Please try again.");
+    }
+  }
+
+  // Load user data from local storage
+  function loadUserData() {
+    const userDataTable = document.getElementById("userData");
+    userDataTable.innerHTML = ""; // Clear any existing data
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+    // Display each user's email and password in a table row
+    users.forEach(user => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${user.email}</td><td>${user.password}</td>`;
+      userDataTable.appendChild(row);
+    });
+  }
+</script>
+
+</body>
+</html>
